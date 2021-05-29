@@ -1,5 +1,5 @@
 # Flightgear-Navdata-Parser
-Project by TOASTER and SkyClan480
+Project by puku-777 and SkyClan480
 
 To make use of these scripts, you will need to have python installed. https://www.python.org/
 
