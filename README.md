@@ -5,7 +5,7 @@ To make use of this parser, you will need to have python installed. https://www.
 
 Download the correct excutable for your os. The file name says what os the executable is built for.
 Linux users:
-In order to run the file you will need to make executable by running <chmod +x fgnavparser-1.1-linux> from the command line in the same directory as the file.
+In order to run the file you will need to make executable by running `chmod +x fgnavparser-1.1-linux` from the command line in the same directory as the file.
 
 ## How to use the parser:
 
