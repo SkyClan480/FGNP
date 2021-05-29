@@ -81,7 +81,6 @@ with open("ILS.txt") as source:
                 nav[z[4:18].strip()]["ILS2"]["elev"] = "0" #if elevation is null
 
             nav[z[4:18].strip()]["ILS2"]["freq"] = z[133:139].replace(".","") #LOC frequency
-            #range calculation to be implemented later
 
         #create dictionaries for relevant data in ILS3
         if("ILS3" in z):
@@ -94,7 +93,6 @@ with open("ILS.txt") as source:
                 nav[z[4:18].strip()]["ILS3"]["elev"] = "0" #if elevation is null
 
             nav[z[4:18].strip()]["ILS3"]["freq"] = z[153:159].replace(".","") #GS frequency
-            #range calculation to be implemented later
             nav[z[4:18].strip()]["ILS3"]["angle"] = z[148:152].replace(".","") #GS angle
 
         #create dictionaries for relevant data in ILS4
@@ -108,19 +106,13 @@ with open("ILS.txt") as source:
                 nav[z[4:18].strip()]["ILS4"]["elev"] = "0" #if elevation is null
 
             nav[z[4:18].strip()]["ILS4"]["freq"] = f"{pairing[z[133:137].strip()] if z[133:137].strip() in pairing else (pairing['0'+z[133:137].strip()])} " #DME frequency
-            #range calculation to be implemented later
             nav[z[4:18].strip()]["ILS4"]["name"] = "DME-ILS" #DME name(always "DME-ILS" for ILS-associated DMEs)
 
         #create dictionaries for relevant data in ILS5
         if("ILS5" in z):
 
             #add correct type code for marker type(outer, middle, inner)
-            if("OM" in z):
-                nav[z[4:18].strip()]["ILS5"]["marktype"] = "7 "
-            elif("MM" in z):
-                nav[z[4:18].strip()]["ILS5"]["marktype"] = "8 "
-            elif("IM" in z):
-                nav[z[4:18].strip()]["ILS5"]["marktype"] = "9 "
+            nav[z[4:18].strip()]["ILS5"]["marktype"] = f"{'9 ' if z[28:30] == 'IM' else '8 ' if z[28:30] == 'MM' else '7 ' if z[28:30] == 'OM' else 'oof'}"
 
             nav[z[4:18].strip()]["ILS5"]["coords"] = f"{'-' if z[75]=='S' else ' '}{int(z[62:64])+int(z[65:67])/60+float(z[68:74])/3600:09.6f} {'-' if z[101]=='W' else ' '}{int(z[87:90])+int(z[91:93])/60+float(z[94:100])/3600:010.6f} " #marker coordinates
             
@@ -144,13 +136,13 @@ with open("ILS.txt") as source, open("nav.dat",'a') as dest:
     #for each line in ILS.txt
     for z in list(source):
         
-        #range entry for for following records still to be implemented
         #write information for ILS2 lines
         if("ILS2" in z):
             dest.write(f"{'5 ' if z[18:21] == 'LOC' else '5 ' if z[18:21] == 'LDA' else '5 ' if z[18:21] == 'SDF' else '4 '}") #correct code for LOC type
             dest.write(nav[z[4:18].strip()]["ILS2"]["coords"]) #LOC coordinates
             dest.write(nav[z[4:18].strip()]["ILS2"]["elev"]+" ") #LOC elevation
             dest.write(nav[z[4:18].strip()]["ILS2"]["freq"]+" ") #LOC frequency
+            dest.write("18 ")
             dest.write(nav[z[4:18].strip()]["ILS1"]["crs"]+" ") #ILS approach course
             dest.write(nav[z[4:18].strip()]["ILS1"]["ident"]+" ") #ILS identifier
             dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
@@ -163,6 +155,7 @@ with open("ILS.txt") as source, open("nav.dat",'a') as dest:
             dest.write(nav[z[4:18].strip()]["ILS3"]["coords"]) #GS coordinates
             dest.write(nav[z[4:18].strip()]["ILS3"]["elev"]+" ") #GS elevation
             dest.write(nav[z[4:18].strip()]["ILS3"]["freq"]+" ") #GS frequency
+            dest.write("10 ")
             dest.write(nav[z[4:18].strip()]["ILS3"]["angle"]+nav[z[4:18].strip()]["ILS1"]["crs"]+" ") #GS angle and ILS approach course in combined format
             dest.write(nav[z[4:18].strip()]["ILS1"]["ident"]+" ") #ILS identifier
             dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
@@ -175,6 +168,7 @@ with open("ILS.txt") as source, open("nav.dat",'a') as dest:
             dest.write(nav[z[4:18].strip()]["ILS4"]["coords"]) #DME coordinates
             dest.write(nav[z[4:18].strip()]["ILS4"]["elev"]+" ") #DME elevation
             dest.write(nav[z[4:18].strip()]["ILS4"]["freq"]+" ") #DME frequency
+            dest.write("10 ")
             dest.write(nav[z[4:18].strip()]["ILS1"]["ident"]+" ") #ILS identifier
             dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
             dest.write(nav[z[4:18].strip()]["ILS1"]["rwy"]+" ") #runway number
@@ -183,12 +177,13 @@ with open("ILS.txt") as source, open("nav.dat",'a') as dest:
         #write information for ILS5 lines
         if("ILS5" in z):
             dest.write(nav[z[4:18].strip()]["ILS5"]["marktype"]) #type code for ILS markers
-            dest.write(nav[z[4:18].strip()]["ILS5"]["coords"]) #marker coordinates
-            dest.write(nav[z[4:18].strip()]["ILS5"]["elev"]+" ") #marker elevation
-            dest.write(nav[z[4:18].strip()]["ILS1"]["crs"]+" ") #ILS approach course
-            dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
-            dest.write(nav[z[4:18].strip()]["ILS1"]["rwy"]+" ") #runway number
-            dest.write(nav[z[4:18].strip()]["ILS5"]["name"]+"\n")
+        #    dest.write(nav[z[4:18].strip()]["ILS5"]["coords"]) #marker coordinates
+        #    dest.write(nav[z[4:18].strip()]["ILS5"]["elev"]+" ") #marker elevation
+        #    dest.write(nav[z[4:18].strip()]["ILS1"]["crs"]+" ") #ILS approach course
+        #    dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
+        #    dest.write(nav[z[4:18].strip()]["ILS1"]["rwy"]+" ") #runway number
+        #    dest.write(nav[z[4:18].strip()]["ILS5"]["name"]+"\n")
+            dest.write(z[28:30]+"\n")
 
     #terminate file with "99"
     dest.write("99")
