@@ -1,7 +1,8 @@
 # Flightgear-Navdata-Parser
 Project by TOASTER and SkyClan480
 
-To make use of this parser, you will need to have python installed. https://www.python.org/
+To make use of this parser, you will need to have python installed. https://www.python.org/.
+
 Download the correct excutable for your os. The file name says what os the executable is built for.
 
 ## How to use the parser:
