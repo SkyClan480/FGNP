@@ -6,7 +6,7 @@ Download the correct excutable for your os. The file name says what os the execu
 
 ## How to use the parser:
 
-1.Download [the latest NASR cycle](https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/). You want either one listed under "Current" or "Preview". It will download as a .zip archive.
+1. Download [the latest NASR cycle](https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/). You want either one listed under "Current" or "Preview". It will download as a .zip archive.
 2. In the .zip there will be several text files. You will need to extract FIX.txt, NAV.txt, ILS.txt, and AWY.txt and put them in the same folder as the parser.
 3. Run the parser. This will create fix.dat, nav.dat, and awy.dat files.
 4. Create a folder called NavData anywhere outside of $FGROOT$ and move the .dat files into it.
