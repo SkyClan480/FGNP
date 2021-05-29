@@ -1,5 +1,5 @@
 # Flightgear-Navdata-Parser
-A set of python scripts written to parse FAA NASR data into .dat files usable by Flightgear.
+Project by TOASTER and SkyClan480
 
 To make use of these scripts, you will need to have python installed. https://www.python.org/
 
