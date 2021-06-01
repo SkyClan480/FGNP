@@ -16,4 +16,4 @@ In order to run the file you will need to make it executable by running `chmod +
 4. Create a folder called NavData anywhere outside of $FGROOT$ and move the .dat files into it.
 5. In the FG launcher, you will need to alter some settings to make Flightgear use the new files. Under "addons", find "additional scenery folders" and add a new one. You'll want to add the folder that NavData is in. For example, if the path to NavData is C:\folder\fgstuff\NavData, you would add C:\folder\fgstuff as the scenery folder. Save this setting and then restart Flightgear for changes to take effect.
 
-You can repeat this process for each new NASR cycle. Simply replace the old .dat files with the new ones.
+You can repeat this process for each new NASR cycle. Simply replace the old .dat files with the new ones. After the first time, you will not need to change flightgear settings in the future, as it will remember the directory and will automatically read the new files.
