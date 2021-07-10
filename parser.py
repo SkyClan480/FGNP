@@ -1,5 +1,8 @@
+import os
+os.mkdir("NavData")
+os.mkdir("NavData/fix")
 effdate = input("NASR effective date >>> ")
-with open("FIX.txt") as source, open("fix.dat",'a') as dest:    
+with open("FIX.txt") as source, open("NavData/fix/fix.dat",'w') as dest:    
     
     dest.write(f"""I
 XP740 compliant for fgfs. Extracted using fix.py by TOASTER from 28-Day NASR Subscriptions effective """+effdate+""" from FAA.gov\n\n""")
@@ -271,7 +274,7 @@ pairing = {
 import math
 
 #open NAV.txt to parse and nav.dat to create, w to overwrite existing nav.dat if present
-with open("NAV.txt") as source, open("nav.dat",'w') as dest:
+with open("NAV.txt") as source, open("NavData/nav.dat",'w') as dest:
 
 #write heading text with information about this script and the source of the data
     dest.write(f"""I
@@ -478,7 +481,7 @@ with open("ILS.txt") as source, open("nav.dat",'a') as dest:
 
 #======================================================================================================================================================================================================
 
-with open('AWY.txt') as source, open('awy.dat','w') as dest:#, input("NASR effective date >>> ") as effdate:
+with open('AWY.txt') as source, open('NavData/awy.dat','w') as dest:#, input("NASR effective date >>> ") as effdate:
     #make a 2d table of airways and points.
     awys = {}
     for z in list(source):
