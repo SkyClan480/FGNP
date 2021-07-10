@@ -1,8 +1,11 @@
 import math
+import os
+os.mkdir("NavData")
+
 from pairing import pairing
 
 #open NAV.txt to parse and nav.dat to create, w to overwrite existing nav.dat if present
-with open("NAV.txt") as source, open("nav.dat",'w') as dest:
+with open("NAV.txt") as source, open("NavData/nav.dat",'w') as dest:
 
 #write heading text with information about this script and the source of the data
     dest.write(f"""I
@@ -136,7 +139,7 @@ with open("ILS.txt") as source:
                 nav[z[4:18].strip()]["ILS5"]["imname"] = "IM"
 
 #reopen ILS.txt for z index and nav.dat to write, 'a' to append ILS information to previously written information
-with open("ILS.txt") as source, open("nav.dat",'a') as dest:
+with open("ILS.txt") as source, open("NavData/nav.dat",'a') as dest:
     
     #for each line in ILS.txt
     for z in list(source):

@@ -1,4 +1,7 @@
-with open("FIX.txt") as source, open("fix.dat",'a') as dest:
+import os
+os.mkdir("NavData/fix")
+
+with open("FIX.txt") as source, open("NavData/fix/fix.dat",'w') as dest:
     dest.write(f"""I
 XP740 compliant for fgfs. Extracted using fix.py by TOASTER from 28-Day NASR Subscriptions effective """+input("NASR effective date >>> ")+""" from FAA.gov\n\n""")
     for z in list(source):
