@@ -1,4 +1,7 @@
-with open('AWY.txt') as source, open('awy.dat','w') as dest:#, input("NASR effective date >>> ") as effdate:
+import os
+os.mkdir("NavData")
+
+with open('AWY.txt') as source, open('NavData/awy.dat','w') as dest:#, input("NASR effective date >>> ") as effdate:
     #make a 2d table of airways and points.
     awys = {}
     for z in list(source):
