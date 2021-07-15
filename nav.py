@@ -1,6 +1,6 @@
-import math
-import os
-os.mkdir("NavData")
+import math, os
+try: os.mkdir("NavData")
+except: pass
 
 from pairing import pairing
 
@@ -70,7 +70,7 @@ with open("ILS.txt") as source:
             nav[z[4:18].strip()]["ILS1"]["ident"] = z[28:33].replace("-","") #ILS identifier
             nav[z[4:18].strip()]["ILS1"]["rwy"] = z[15:18].strip() #runway number
             nav[z[4:18].strip()]["ILS1"]["icao"] = "K"+z[159:162] #airport ICAO
-            nav[z[4:18].strip()]["ILS1"]["name"] = "ILS-cat-"+z[172:176].strip() #formatted ILS name
+            nav[z[4:18].strip()]["ILS1"]["name"] = 'ILS-cat-'+z[172:176].strip() if z[172:176].strip() else z[18:21]#formatted name of ILS or other directional aid
             nav[z[4:18].strip()]["ILS1"]["crs"] = z[281:288] #approach course
 
         #create dictionaries for relevant data in ILS2
