@@ -36,7 +36,10 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                if(z[489:495].strip() != ""):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495].strip()))*0.991130075)):>3} ")
+                else:
+                    dest.write("81 ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -61,7 +64,10 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                if(z[489:495].strip() != ""):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495].strip()))*0.991130075)):>3} ")
+                else:
+                    dest.write("81 ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -113,7 +119,10 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                if(z[489:495].strip() != ""):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495].strip()))*0.991130075)):>3} ")
+                else:
+                    dest.write("81 ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -139,7 +148,10 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                if(z[489:495].strip() != ""):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495].strip()))*0.991130075)):>3} ")
+                else:
+                    dest.write("81 ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -189,10 +201,10 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                if("VOR" not in z and z[489:495]=='      '):
+                if(z[489:495].strip() != ""):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495].strip()))*0.991130075)):>3} ")
+                else:
                     dest.write("81 ")
-                elif("VOR" not in z):
-                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -217,10 +229,10 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                if("VOR" not in z and z[489:495]=='      '):
+                if(z[489:495].strip() != ""):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495].strip()))*0.991130075)):>3} ")
+                else:
                     dest.write("81 ")
-                elif("VOR" not in z):
-                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
