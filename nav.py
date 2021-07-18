@@ -36,10 +36,7 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                if("VOR" not in z and z[489:495]=='      '):
-                    dest.write("81 ")
-                elif("VOR" not in z):
-                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -64,10 +61,7 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                if("VOR" not in z and z[489:495]=='      '):
-                    dest.write("81 ")
-                elif("VOR" not in z):
-                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -119,10 +113,7 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
                     dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
                 #calculate reception range based on power(if notated, otherwise use default) and write
-                if("VOR" not in z and z[489:495]=='      '):
-                    dest.write("81 ")
-                elif("VOR" not in z):
-                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
 
                 #write navaid identifier and add a space
                 dest.write(z[4:7].strip()+" ")
@@ -134,37 +125,109 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
             #write the single entry types
             if("NDB" in z and "NDB/DME" not in z):
                 dest.write("2 ")
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #calculate reception range based on power(if notated, otherwise use default) and write
+                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+
             elif("VOR" in z and "VOR/DME" not in z and "VORTAC" not in z):
                 dest.write("3 ")
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #write a default reception range of 200 for VORs (as they don't supply a tx power value)
+                dest.write("200 ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+
             elif("DME" in z and "NDB/DME" not in z and "VOR/DME" not in z):
                 dest.write("13 ")
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #calculate reception range based on power(if notated, otherwise use default) and write
+                if("VOR" not in z and z[489:495]=='      '):
+                    dest.write("81 ")
+                elif("VOR" not in z):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+
             elif("TACAN" in z):
                 dest.write("13 ")
 
-            #convert coordinates to decimal degrees and write
-            dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
 
-            #convert elevation to integer type and write, then add a space
-            dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
-            dest.write(" ")
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
 
-            #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
-            dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
-            if(z[533:539].strip() == ""):
-                dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
 
-            #calculate reception range based on power(if notated, otherwise use default) and write
-            if("VOR" not in z and z[489:495]=='      '):
-                dest.write("81 ")
-            elif("VOR" not in z):
-                dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+                #calculate reception range based on power(if notated, otherwise use default) and write
+                if("VOR" not in z and z[489:495]=='      '):
+                    dest.write("81 ")
+                elif("VOR" not in z):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
 
-            #write navaid identifier and add a space
-            dest.write(z[4:7].strip()+" ")
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
 
-            #write name and format and append type
-            dest.write(z[42:71].strip()+" ")
-            dest.write(z[8:15].strip().replace("/","-")+"\n")
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
 
 #open ILS.txt to parse
 with open("ILS.txt") as source:
