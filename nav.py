@@ -17,14 +17,128 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
         #only parse NAV1 lines that are not VOT type
         if("NAV1" in z and "VOT" not in z and "FAN MARKER" not in z):
 
-            #write navaid type code depending on type
-            if("NDB/DME" in z or "TACAN" in z):
-                dest.write("13 ")
-            elif("NDB" in z):
+            #first tackle the double entries
+            if("NDB/DME" in z):
+                
+                #NDB entry
                 dest.write("2 ")
-            elif("VOR" in z):
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #calculate reception range based on power(if notated, otherwise use default) and write
+                if("VOR" not in z and z[489:495]=='      '):
+                    dest.write("81 ")
+                elif("VOR" not in z):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+
+                #DME entry
+                dest.write("13 ")
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #calculate reception range based on power(if notated, otherwise use default) and write
+                if("VOR" not in z and z[489:495]=='      '):
+                    dest.write("81 ")
+                elif("VOR" not in z):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+
+            if("VOR/DME" in z or "VORTAC" in z):
+
+                #VOR entry
                 dest.write("3 ")
-            elif("DME" in z):
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #write a default reception range of 200 for VORs (as they don't supply a tx power value)
+                dest.write("200 ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+
+                #DME/TACAN entry
+                dest.write("12 ")
+
+                #convert coordinates to decimal degrees and write
+                dest.write(f"{'-' if z[384]=='S' else ' '}{int(z[371:373])+int(z[374:376])/60+float(z[377:383])/3600:09.6f} {'-' if z[409]=='W' else ' '}{int(z[396:399])+int(z[400:402])/60+float(z[403:409])/3600:010.6f} ")
+
+                #convert elevation to integer type and write, then add a space
+                dest.write(f"{int(float(z[473:479].replace(' ','') or 0))}")
+                dest.write(" ")
+
+                #convert MHz frequencies to KHz and write, or find channel frequency if only channel is listed
+                dest.write(f"{int(float(z[533:539])*10) if '.' in z[533:539] else z[533:539].strip()} ")
+                if(z[533:539].strip() == ""):
+                    dest.write(f"{pairing[z[529:533].strip()] if z[529:533].strip() in pairing else pairing['0'+z[529:533].strip()]} ")
+
+                #calculate reception range based on power(if notated, otherwise use default) and write
+                if("VOR" not in z and z[489:495]=='      '):
+                    dest.write("81 ")
+                elif("VOR" not in z):
+                    dest.write(f"{int(10**(math.log10(int(z[489:495]))*0.991130075)):>3} ")
+
+                #write navaid identifier and add a space
+                dest.write(z[4:7].strip()+" ")
+
+                #write name and format and append type
+                dest.write(z[42:71].strip()+" ")
+                dest.write(z[8:15].strip().replace("/","-")+"\n")
+            
+            #write the single entry types
+            if("NDB" in z and "NDB/DME" not in z):
+                dest.write("2 ")
+            elif("VOR" in z and "VOR/DME" not in z and "VORTAC" not in z):
+                dest.write("3 ")
+            elif("DME" in z and "NDB/DME" not in z and "VOR/DME" not in z):
+                dest.write("13 ")
+            elif("TACAN" in z):
                 dest.write("13 ")
 
             #convert coordinates to decimal degrees and write
@@ -52,7 +166,7 @@ XP810 compliant for fgfs. Extracted with nav.py by TOASTER and SkyClan480 from 2
             dest.write(z[42:71].strip()+" ")
             dest.write(z[8:15].strip().replace("/","-")+"\n")
 
-#open ILS.txt to parse, use existing nav.dat as dest
+#open ILS.txt to parse
 with open("ILS.txt") as source:
 
     #create master data dictionary
@@ -150,7 +264,7 @@ with open("ILS.txt") as source, open("NavData/nav.dat",'a') as dest:
             dest.write(nav[z[4:18].strip()]["ILS2"]["coords"]) #LOC coordinates
             dest.write(nav[z[4:18].strip()]["ILS2"]["elev"]+" ") #LOC elevation
             dest.write(nav[z[4:18].strip()]["ILS2"]["freq"]+" ") #LOC frequency
-            dest.write("18 ")
+            dest.write("30 ")
             dest.write(nav[z[4:18].strip()]["ILS1"]["crs"]+" ") #ILS approach course
             dest.write(nav[z[4:18].strip()]["ILS1"]["ident"]+" ") #ILS identifier
             dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
@@ -163,7 +277,7 @@ with open("ILS.txt") as source, open("NavData/nav.dat",'a') as dest:
             dest.write(nav[z[4:18].strip()]["ILS3"]["coords"]) #GS coordinates
             dest.write(nav[z[4:18].strip()]["ILS3"]["elev"]+" ") #GS elevation
             dest.write(nav[z[4:18].strip()]["ILS3"]["freq"]+" ") #GS frequency
-            dest.write("10 ")
+            dest.write("30 ")
             dest.write(nav[z[4:18].strip()]["ILS3"]["angle"]+nav[z[4:18].strip()]["ILS1"]["crs"]+" ") #GS angle and ILS approach course in combined format
             dest.write(nav[z[4:18].strip()]["ILS1"]["ident"]+" ") #ILS identifier
             dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
@@ -176,7 +290,7 @@ with open("ILS.txt") as source, open("NavData/nav.dat",'a') as dest:
             dest.write(nav[z[4:18].strip()]["ILS4"]["coords"]) #DME coordinates
             dest.write(nav[z[4:18].strip()]["ILS4"]["elev"]+" ") #DME elevation
             dest.write(nav[z[4:18].strip()]["ILS4"]["freq"]+" ") #DME frequency
-            dest.write("10 ")
+            dest.write("30 ")
             dest.write(nav[z[4:18].strip()]["ILS1"]["ident"]+" ") #ILS identifier
             dest.write(nav[z[4:18].strip()]["ILS1"]["icao"]+" ") #airport ICAO
             dest.write(nav[z[4:18].strip()]["ILS1"]["rwy"]+" ") #runway number
