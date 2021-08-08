@@ -270,11 +270,6 @@ pairing = {
 }
 
 #======================================================================================================================================================================================================
-
-import math, os
-try: os.mkdir("NavData")
-except: pass
-
 from pairing import pairing
 
 #open NAV.txt to parse and nav.dat to create, w to overwrite existing nav.dat if present
