@@ -1,6 +1,7 @@
 import os
-os.mkdir("NavData")
-
+try: os.mkdir("NavData")
+except: pass
+    
 with open('AWY.txt') as source, open('NavData/awy.dat','w') as dest:#, input("NASR effective date >>> ") as effdate:
     #make a 2d table of airways and points.
     awys = {}
