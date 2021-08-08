@@ -1,5 +1,6 @@
 import os
-os.mkdir("NavData/fix")
+try:os.mkdir("NavData/fix")
+except:pass
 
 with open("FIX.txt") as source, open("NavData/fix/fix.dat",'w') as dest:
     dest.write(f"""I
