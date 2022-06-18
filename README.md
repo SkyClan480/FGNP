@@ -16,9 +16,5 @@ If you are on linux, you will need to make the file executable by running `chmod
 
 You can repeat this process for each new NASR cycle. Simply replace the old NavData folder with the new one. After the first time, you will not need to change flightgear settings in the future, as it will remember the directory and will automatically read the new files.
 
-## Upcoming Changes
-NASR nav script rework - Numerous changes to the NASR nav script to fix inconsistency problems involving NDB/DMEs, TACANs, VOR/DMEs, and VORTACs
 
-ARINC 424 support - A separate set of scripts edited to parse from the ARINC 424 international format. These will be put on a separate version alongside the NASR version.
-
-Procedures - Along with the ARINC 424 version will come departure and arrival procedure data. This functionality can't be added to the NASR version due to lack of necessary data.
+Please note that we are currently in the process of transitioning to using the CIFP (Coded Instrument Flight Procedures) instead of NASR as the data source. This is because the CIFP are written in the international standard ARINC 424 format, which is shared by all countries. So, if we write the code to parse that format, it will be compatible with all countries' CIFP. The CIFP version of the parser is available on the "cifp-source" branch of the repository if you want to try it out (do be warned it is very incomplete at this point). The NASR will remain the active method for now, limiting data availability to the USA, but the CIFP conversion will likely be merged with main in the future, once we bring to a workable state.
