@@ -1,4 +1,5 @@
 import os
+import math
 os.mkdir("NavData")
 os.mkdir("NavData/fix")
 effdate = input("NASR effective date >>> ")
